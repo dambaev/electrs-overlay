@@ -5,6 +5,11 @@ in
 {
   options.services.electrs = {
     enable = lib.mkEnableOption "Rust implementation of Electrum service";
+    rpc_listen = lib.mkOption {
+      type = lib.types.str;
+      default = "127.0.0.1:50001";
+      example = "127.0.0.1:50001";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -22,10 +27,9 @@ in
         };
         path = with pkgs; [ electrs ];
         script = ''
-          electrs
+          electrs --electrum-rpc-addr="${cfg.rpc_listen}"
         '';
       };
-    };
-    
+    };    
   };
 }

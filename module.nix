@@ -15,6 +15,11 @@ in
       default = "/var/lib/electrs";
       example = "/var/lib/electrs";
     };
+    cookie_file = lib.mkOption {
+      type = lib.types.str;
+      default = null;
+      example = "/path/to/.cookie";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -36,7 +41,8 @@ in
           electrs \
             -vv \
             --electrum-rpc-addr="${cfg.rpc_listen}" \
-            --db-dir "${cfg.db_dir}"
+            --db-dir "${cfg.db_dir}" \
+            --cookie-file ${cfg.cookie_file}
         '';
       };
     };    

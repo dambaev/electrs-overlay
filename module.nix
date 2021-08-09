@@ -32,6 +32,7 @@ in
         };
         path = with pkgs; [ electrs ];
         script = ''
+          mkdir -p "${cfg.db_dir}" # ensure DB dir exists
           electrs --electrum-rpc-addr="${cfg.rpc_listen}" --db-dir "${cfg.db_dir}"
         '';
       };

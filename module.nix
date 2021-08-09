@@ -10,6 +10,11 @@ in
       default = "127.0.0.1:50001";
       example = "127.0.0.1:50001";
     };
+    db_dir = lib.mkOption {
+      type = lib.types.str;
+      default = "/var/lib/electrs";
+      example = "/var/lib/electrs";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -27,7 +32,7 @@ in
         };
         path = with pkgs; [ electrs ];
         script = ''
-          electrs --electrum-rpc-addr="${cfg.rpc_listen}"
+          electrs --electrum-rpc-addr="${cfg.rpc_listen}" --db-dir "${cfg.db_dir}"
         '';
       };
     };    

@@ -20,6 +20,11 @@ in
       default = null;
       example = "/path/to/.cookie";
     };
+    blocks_dir = lib.mkOption {
+      type = lib.types.str;
+      default = null;
+      example = "/path/to/blocks/dir";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -42,7 +47,8 @@ in
             -vv \
             --electrum-rpc-addr="${cfg.rpc_listen}" \
             --db-dir "${cfg.db_dir}" \
-            --cookie-file ${cfg.cookie_file}
+            --cookie-file ${cfg.cookie_file} \
+            --blocks-dir ${cfg.blocks_dir} \
         '';
       };
     };    

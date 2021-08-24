@@ -25,6 +25,14 @@ in
       default = null;
       example = "/path/to/blocks/dir";
     };
+    network = lib.mkOption {
+      type = lib.types.str;
+      default = "mainnet";
+      example = "testnet";
+      description = ''
+        This option defines Bitcoin network type to work with.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -49,6 +57,7 @@ in
             --db-dir "${cfg.db_dir}" \
             --cookie-file ${cfg.cookie_file} \
             --blocks-dir ${cfg.blocks_dir} \
+            --network ${cfg.network}
         '';
       };
     };    

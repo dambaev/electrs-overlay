@@ -27,10 +27,11 @@ in
     };
     network = lib.mkOption {
       type = lib.types.str;
-      default = "mainnet";
+      default = "bitcoin";
       example = "testnet";
       description = ''
         This option defines Bitcoin network type to work with.
+        one of 'bitcoin', 'testnet', 'regtest' or 'signet'
       '';
     };
   };

@@ -59,7 +59,7 @@ let
   };
 in
 {
-  options.services.electrs = mkOption {
+  options.services.electrs = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submodule electrsOpts);
     default = {};
     description = "One or more electrs instances";

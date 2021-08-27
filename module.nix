@@ -1,9 +1,7 @@
 {config, pkgs, options, lib, ...}:
 let
-  cfg = config.services.electrs;
-in
-{
-  options.services.electrs = {
+  eachElectrs = config.services.electrs;
+  electrsOpts = {config, lib, name, ...}: {
     enable = lib.mkEnableOption "Rust implementation of Electrum service";
     rpc_listen = lib.mkOption {
       type = lib.types.str;
@@ -35,14 +33,13 @@ in
       '';
     };
   };
-
-  config = lib.mkIf cfg.enable {
+  electrs_instance = electrsName: cfg: {
     environment.systemPackages = with pkgs; [
       electrs
     ];
     systemd.services = {
       # define systemd service for electrs
-      electrs = {
+      nameValuePair "electrs-${electrsName}" = {
         wantedBy = [ "multi-user.target" ];
         after = [ "network-setup.service" ];
         requires = [ "network-setup.service" ];
@@ -63,4 +60,12 @@ in
       };
     };    
   };
+in
+{
+  options.services.electrs = mkOption {
+    type = lib.types.attrsOf (lib.types.submodule electrsOpts);
+    default = {};
+    description = "One or more electrs instances";
+  };
+  config = mkIf (eachElectrs != {}) (mapAttrs' electrs_instance eachElectrs);
 }

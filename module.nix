@@ -1,36 +1,38 @@
 {config, pkgs, options, lib, ...}:
 let
   eachElectrs = config.services.electrs;
-  electrsOpts = {config, lib, name, ...}: {
-    enable = lib.mkEnableOption "Rust implementation of Electrum service";
-    rpc_listen = lib.mkOption {
-      type = lib.types.str;
-      default = "127.0.0.1:50001";
-      example = "127.0.0.1:50001";
-    };
-    db_dir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/electrs";
-      example = "/var/lib/electrs";
-    };
-    cookie_file = lib.mkOption {
-      type = lib.types.str;
-      default = null;
-      example = "/path/to/.cookie";
-    };
-    blocks_dir = lib.mkOption {
-      type = lib.types.str;
-      default = null;
-      example = "/path/to/blocks/dir";
-    };
-    network = lib.mkOption {
-      type = lib.types.str;
-      default = "bitcoin";
-      example = "testnet";
-      description = ''
-        This option defines Bitcoin network type to work with.
-        one of 'bitcoin', 'testnet', 'regtest' or 'signet'
-      '';
+  electrsOpts = args: {
+    options = {
+      enable = lib.mkEnableOption "Rust implementation of Electrum service";
+      rpc_listen = lib.mkOption {
+        type = lib.types.str;
+        default = "127.0.0.1:50001";
+        example = "127.0.0.1:50001";
+      };
+      db_dir = lib.mkOption {
+        type = lib.types.str;
+        default = "/var/lib/electrs";
+        example = "/var/lib/electrs";
+      };
+      cookie_file = lib.mkOption {
+        type = lib.types.str;
+        default = null;
+        example = "/path/to/.cookie";
+      };
+      blocks_dir = lib.mkOption {
+        type = lib.types.str;
+        default = null;
+        example = "/path/to/blocks/dir";
+      };
+      network = lib.mkOption {
+        type = lib.types.str;
+        default = "bitcoin";
+        example = "testnet";
+        description = ''
+          This option defines Bitcoin network type to work with.
+          one of 'bitcoin', 'testnet', 'regtest' or 'signet'
+        '';
+      };
     };
   };
   electrs_instance = electrsName: cfg: {

@@ -37,7 +37,7 @@ let
     environment.systemPackages = with pkgs; [
       electrs
     ];
-    systemd.services = nameValuePair "electrs-${electrsName}" {  # define systemd service for electrs
+    systemd.services = lib.nameValuePair "electrs-${electrsName}" {  # define systemd service for electrs
       wantedBy = [ "multi-user.target" ];
       after = [ "network-setup.service" ];
       requires = [ "network-setup.service" ];

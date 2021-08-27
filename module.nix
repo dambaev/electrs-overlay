@@ -64,5 +64,5 @@ in
     default = {};
     description = "One or more electrs instances";
   };
-  config = lib.mkIf (eachElectrs != {}) (mapAttrs' electrs_instance eachElectrs);
+  config = lib.mkIf (eachElectrs != {}) (lib.mapAttrs' electrs_instance eachElectrs);
 }

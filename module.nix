@@ -35,11 +35,9 @@ let
       };
     };
   };
-  electrs_instance = electrsName: cfg: {
-    environment.systemPackages = with pkgs; [
-      electrs
-    ];
-    systemd.services = lib.nameValuePair "electrs-${electrsName}" {  # define systemd service for electrs
+  electrs_instance = electrsName: cfg:
+    # define systemd service for electrs
+    lib.nameValuePair "electrs-${electrsName}" {
       wantedBy = [ "multi-user.target" ];
       after = [ "network-setup.service" ];
       requires = [ "network-setup.service" ];
@@ -57,8 +55,7 @@ let
           --blocks-dir ${cfg.blocks_dir} \
           --network ${cfg.network}
       '';
-    };    
-  };
+    };
 in
 {
   options.services.electrs = lib.mkOption {
@@ -66,5 +63,10 @@ in
     default = {};
     description = "One or more electrs instances";
   };
-  config = lib.mkIf (eachElectrs != {}) (lib.mapAttrs' electrs_instance eachElectrs);
+  config = lib.mkIf (eachElectrs != {}) {
+    environment.systemPackages = with pkgs; [
+      electrs
+    ];
+    systemd.services = lib.mapAttrs' electrs_instance eachElectrs;
+  };
 }

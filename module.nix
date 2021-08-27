@@ -3,7 +3,6 @@ let
   eachElectrs = config.services.electrs;
   electrsOpts = args: {
     options = {
-      enable = lib.mkEnableOption "Rust implementation of Electrum service";
       rpc_listen = lib.mkOption {
         type = lib.types.str;
         default = "127.0.0.1:50001";

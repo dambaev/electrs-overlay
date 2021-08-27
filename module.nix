@@ -39,7 +39,7 @@ let
     ];
     systemd.services = {
       # define systemd service for electrs
-      nameValuePair "electrs-${electrsName}" = {
+      nameValuePair "electrs-${electrsName}" {
         wantedBy = [ "multi-user.target" ];
         after = [ "network-setup.service" ];
         requires = [ "network-setup.service" ];

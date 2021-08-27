@@ -37,27 +37,24 @@ let
     environment.systemPackages = with pkgs; [
       electrs
     ];
-    systemd.services = {
-      # define systemd service for electrs
-      nameValuePair "electrs-${electrsName}" {
-        wantedBy = [ "multi-user.target" ];
-        after = [ "network-setup.service" ];
-        requires = [ "network-setup.service" ];
-        serviceConfig = {
-          Type = "simple";
-        };
-        path = with pkgs; [ electrs ];
-        script = ''
-          mkdir -p "${cfg.db_dir}" # ensure DB dir exists
-          electrs \
-            -vv \
-            --electrum-rpc-addr="${cfg.rpc_listen}" \
-            --db-dir "${cfg.db_dir}" \
-            --cookie-file ${cfg.cookie_file} \
-            --blocks-dir ${cfg.blocks_dir} \
-            --network ${cfg.network}
-        '';
+    systemd.services = nameValuePair "electrs-${electrsName}" {  # define systemd service for electrs
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-setup.service" ];
+      requires = [ "network-setup.service" ];
+      serviceConfig = {
+        Type = "simple";
       };
+      path = with pkgs; [ electrs ];
+      script = ''
+        mkdir -p "${cfg.db_dir}" # ensure DB dir exists
+        electrs \
+          -vv \
+          --electrum-rpc-addr="${cfg.rpc_listen}" \
+          --db-dir "${cfg.db_dir}" \
+          --cookie-file ${cfg.cookie_file} \
+          --blocks-dir ${cfg.blocks_dir} \
+          --network ${cfg.network}
+      '';
     };    
   };
 in

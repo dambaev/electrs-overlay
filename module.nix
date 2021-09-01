@@ -10,7 +10,7 @@ let
       };
       daemon_rpc_addr = lib.mkOption {
         type = lib.types.str;
-        default = null;
+        default = "";
         example = "127.0.0.1:8334";
         description = ''
           (Optional) Defines address:port of the appropriate bitcoind instance.

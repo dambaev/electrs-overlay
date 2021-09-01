@@ -8,6 +8,14 @@ let
         default = "127.0.0.1:50001";
         example = "127.0.0.1:50001";
       };
+      daemon_rpc_addr = lib.mkOption {
+        type = lib.types.str;
+        default = null;
+        example = "127.0.0.1:8334";
+        description = ''
+          (Optional) Defines address:port of the appropriate bitcoind instance.
+        '';
+      };
       db_dir = lib.mkOption {
         type = lib.types.str;
         default = "/var/lib/electrs";
@@ -52,7 +60,8 @@ let
           --db-dir "${cfg.db_dir}" \
           --cookie-file ${cfg.cookie_file} \
           --blocks-dir ${cfg.blocks_dir} \
-          --network ${cfg.network}
+          --network ${cfg.network} \
+          ${lib.optionalString (lib.stringLength cfg.daemon_rpc_addr > 0) "--daemon-rpc-addr ${cfg.daemon_rpc_addr}"}
       '';
     };
 in

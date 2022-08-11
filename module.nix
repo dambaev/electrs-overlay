@@ -26,10 +26,10 @@ let
         default = null;
         example = "/path/to/.cookie";
       };
-      blocks_dir = lib.mkOption {
+      daemon_dir = lib.mkOption {
         type = lib.types.str;
         default = null;
-        example = "/path/to/blocks/dir";
+        example = "/path/to/bitcoin";
       };
       network = lib.mkOption {
         type = lib.types.str;
@@ -55,12 +55,12 @@ let
       script = ''
         mkdir -p "${cfg.db_dir}" # ensure DB dir exists
         electrs \
-          -vv \
           --electrum-rpc-addr="${cfg.rpc_listen}" \
           --db-dir "${cfg.db_dir}" \
           --cookie-file ${cfg.cookie_file} \
-          --blocks-dir ${cfg.blocks_dir} \
+          --daemon-dir ${cfg.daemon_dir} \
           --network ${cfg.network} \
+          --log-filters info \
           ${lib.optionalString (lib.stringLength cfg.daemon_rpc_addr > 0) "--daemon-rpc-addr ${cfg.daemon_rpc_addr}"}
       '';
     };
